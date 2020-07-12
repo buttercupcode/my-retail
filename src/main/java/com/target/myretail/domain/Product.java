@@ -1,8 +1,11 @@
 package com.target.myretail.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Product {
     private int id;
     private String name;
+    @JsonProperty("current_price")
     private CurrentPrice currentPrice;
 
 

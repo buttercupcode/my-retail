@@ -1,6 +1,7 @@
 package com.target.myretail;
 
 import com.target.myretail.domain.CurrentPrice;
+import com.target.myretail.domain.Product;
 import com.target.myretail.domain.ProductDetail;
 import com.target.myretail.domain.ProductJson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,10 @@ public class ProductDetailService {
     public CurrentPrice getPrice(int productId) {
         return new CurrentPrice(12.50, "USD");
 
+    }
+
+    public Product updatePrice(Product product, Double updatedPrice) {
+        product.getCurrentPrice().setPrice(updatedPrice);
+        return product;
     }
 }

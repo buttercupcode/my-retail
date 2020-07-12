@@ -6,11 +6,8 @@ import com.target.myretail.domain.ProductDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.function.BiFunction;
 
 @RestController
@@ -33,6 +30,18 @@ public class ProductController {
            Product p = PROD_MAPPER.apply(prodDetail,price);
            p.setId(productId);
            return  new ResponseEntity<>(p, HttpStatus.OK);
+    }
+
+    @PutMapping("/products/{id}")
+    public ResponseEntity<Product> updateProducts(@PathVariable("id") Integer productId , @RequestBody Double newPrice) {
+
+        ProductDetail prodDetail = productDetailService.getProductDetail(productId);
+
+        CurrentPrice price = productDetailService.getPrice(productId);
+        Product p = PROD_MAPPER.apply(prodDetail,price);
+        productDetailService.updatePrice(p,newPrice);
+        p.setId(productId);
+        return  new ResponseEntity<>(p, HttpStatus.OK);
     }
     @GetMapping("/hello")
     public ResponseEntity<String> healthCheck(){
