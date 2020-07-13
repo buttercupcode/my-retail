@@ -1,9 +1,10 @@
 package com.target.myretail;
 
 import com.target.myretail.domain.CurrentPrice;
-import com.target.myretail.domain.Product;
 import com.target.myretail.domain.ProductDetail;
 import com.target.myretail.domain.ProductJson;
+import com.target.myretail.domain.ProductResponse;
+import com.target.myretail.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,9 @@ public class ProductDetailService {
     @Value("${productDetail.url}")
     String url;
 
+    @Autowired
+    ProductRepository productRepository;
+
     public ProductDetail getProductDetail(int productId) {
         UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(this.url).buildAndExpand(productId);
         ResponseEntity<ProductJson> productDetail = restTemplate.getForEntity(uriComponents.toString(), ProductJson.class);
@@ -32,8 +36,13 @@ public class ProductDetailService {
 
     }
 
-    public Product updatePrice(Product product, Double updatedPrice) {
-        product.getCurrentPrice().setPrice(updatedPrice);
-        return product;
+    public ProductResponse updatePrice(ProductResponse productResponse, Double updatedPrice) {
+        productResponse.getCurrentPrice().setPrice(updatedPrice);
+        Product p = new Product();
+        p.setId(productResponse.getId());
+        p.setName(productResponse.getName());
+        p.setPrice(productResponse.getCurrentPrice().getPrice());
+        Product savedProduct = this.productRepository.save(p);
+        return productResponse;
     }
 }

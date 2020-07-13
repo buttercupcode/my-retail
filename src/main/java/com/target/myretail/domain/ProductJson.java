@@ -2,12 +2,9 @@ package com.target.myretail.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ProductJson {
     @JsonProperty("product")
-   private ProductDetail productDetail;
+    private ProductDetail productDetail;
 
     public ProductDetail getProductDetail() {
         return productDetail;
